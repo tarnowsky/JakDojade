@@ -17,7 +17,7 @@ enum Directions {
 };
 
 struct ResultPath {
-    tVector<tString> visitedCities;
+    tVector<tString*> visitedCities;
     int cost;
 };
 

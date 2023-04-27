@@ -2,12 +2,20 @@
 
 JakDojade::JakDojade() : m_rows(0), m_cols(0){
     std::cin >> m_cols >> m_rows;
-
     m_board = new Node*[m_rows];
     for (int i = 0; i < m_rows; i++)
         m_board[i] = new Node[m_cols];
-
 }
+
+void JakDojade::parseBoard() {
+    for (int i = 0; i < m_rows; i++) {
+        for (int j = 0; j < m_cols; j++) {
+            std::cin >> m_board[i][j].m_id;
+            m_board[i][j].m_posistion = {j, i};
+        }
+    }
+}
+
 
 std::ostream &operator<<(std::ostream &_out, const JakDojade& _jdojade) {
     for (int i = 0; i < _jdojade.m_rows; i++) {
@@ -16,14 +24,6 @@ std::ostream &operator<<(std::ostream &_out, const JakDojade& _jdojade) {
         _out << std::endl;
     }
     return _out;
-}
-
-void JakDojade::parseBoard() {
-    for (int i = 0; i < m_rows; i++)
-        for (int j = 0; j < m_cols; j++) {
-            std::cin >> m_board[i][j].m_id;
-            m_board[i][j].m_posistion = {j, i};
-        }
 }
 
 JakDojade::~JakDojade() {
@@ -319,6 +319,7 @@ tVector<Path> JakDojade::findPath(City *from) {
                 break;
             }
         }
+
         if (ignore) continue;
 
         pathList.push(poped_path);
@@ -345,7 +346,6 @@ void JakDojade::executeCommands() {
     while(command_num--) {
         std::cin >> city1 >> city2 >> mode;
         std::cin.get();
-
         if (city1 != city2) {
             for (auto &_city: m_cityList)
                 if (_city.name() == city1) {
@@ -358,19 +358,19 @@ void JakDojade::executeCommands() {
                     if (mode) {
                         bool city_founded = false;
                         if (path.from->name() == city1) break;
-                        tString city_name = path.from->name();
-                        while(city_name != city1){
+                        tString* city_name = &(path.from->name());
+                        while(*city_name != city1){
                             res.visitedCities.push(city_name);
                             for (int i = 0; i < pathList.len(); i++) {
-                                if (pathList[i].to->name() == city_name) {
-                                    city_name = pathList[i].from->name();
+                                if (pathList[i].to->name() == *city_name) {
+                                    city_name = &(pathList[i].from->name());
                                     city_founded = true;
                                     break;
                                 }
                             }
                         }
                         for (auto &city : res.visitedCities.reverse())
-                            std::cout << " " << city;
+                            std::cout << " " << *city;
                         if (city_founded) break;
                     }
                 }
@@ -387,3 +387,4 @@ void JakDojade::executeCommands() {
         res.visitedCities.clear();
     }
 }
+

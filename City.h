@@ -8,9 +8,6 @@ class Neighbour;
 struct Point {
     int x;
     int y;
-    friend std::ostream& operator<<(std::ostream& _out, const Point& _point) {
-        return _out << "(" << _point.x << ", " << _point.y << ")";
-    }
     Point() : x(-1), y(-1) {}
     Point(int _x, int _y) : x(_x), y(_y) {}
 

@@ -2,10 +2,6 @@
 #define JAKDOJADE_TPRIORITYQUEUE_H
 #include "City.h"
 
-struct Edge {
-    tString city1, city2;
-};
-
 struct Path {
     City *from;
     City *to;
